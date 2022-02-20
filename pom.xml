@@ -14,10 +14,10 @@
     <name>spring-webmvc-rest-api</name>
     <description>Demo project for Spring Boot</description>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
+<!--    <properties>-->
+<!--        <maven.compiler.source>11</maven.compiler.source>-->
+<!--        <maven.compiler.target>11</maven.compiler.target>-->
+<!--    </properties>-->
 
     <dependencies>
         <dependency>
