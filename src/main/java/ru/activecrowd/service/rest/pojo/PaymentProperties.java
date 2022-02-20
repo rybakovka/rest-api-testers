@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class PaymentProperties {
-    private Timestamp dateTime;
     private BigDecimal sum;
     private String customer;
 }

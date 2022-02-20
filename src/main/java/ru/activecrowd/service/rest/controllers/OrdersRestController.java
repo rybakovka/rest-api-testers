@@ -111,8 +111,10 @@ public final class OrdersRestController {
 
 
     @PostMapping("{orderKey}/payments")
-    public ResponseEntity<List<PaymentProperties>> createPayment(@PathVariable UUID orderKey
+    public ResponseEntity<Void> createPayment(@PathVariable UUID orderKey
             ,@RequestBody Payment payment) {
+        if (!payment.getAdmin().equals(UUID.fromString("81d73f81-ba5e-4c49-bff4-12b720f4bed0")))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         Integer orderId = this.jdbcOperations.queryForObject(
                 "SELECT id FROM orders WHERE key = ? LIMIT 1;"
                 , (resultSet, i) ->
@@ -120,8 +122,7 @@ public final class OrdersRestController {
 
         jdbcOperations.update("INSERT INTO payments " +
                         "(date, sum, customer, orderid) " +
-                        "VALUES( ?, ?, ?, ?);",
-                payment.getProperties().getDateTime(),
+                        "VALUES( now(), ?, ?, ?);",
                 payment.getProperties().getSum(),
                 payment.getProperties().getCustomer(),
                 orderId);
@@ -137,7 +138,6 @@ public final class OrdersRestController {
 
         return ResponseEntity.ok(jdbcOperations.query("SELECT * FROM payments WHERE orderid = ?", (resultSet, i) ->
                 new PaymentProperties(
-                        resultSet.getTimestamp("date"),
                         resultSet.getBigDecimal("sum"),
                         resultSet.getString("customer")
                 ), orderId));
